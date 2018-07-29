@@ -32,4 +32,12 @@ class Customer extends Model
     {
         return $this->hasMany(Action::class);
     }
+
+    /**
+     * @param $query
+     */
+    public function scopeOrderByName($query)
+    {
+        $query->orderBy('last_name')->orderBy('first_name');
+    }
 }
