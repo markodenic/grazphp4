@@ -11,3 +11,8 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .env
+.env.vessel
+.env.bak.vessel
+docker-compose.yml
+/docker
+vessel
