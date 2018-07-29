@@ -9,6 +9,7 @@
             <th>Name</th>
             <th>Company</th>
             <th>Birthday</th>
+            <th>Last action</th>
         </tr>
 
         @foreach ($customers as $customer)
@@ -16,6 +17,8 @@
                 <td>{{ $customer->last_name }}, {{ $customer->first_name }}</td>
                 <td>{{ $customer->company->name }}</td>
                 <td>{{ $customer->birth_date->format('F j') }}</td>
+                 {{-- via relationship with eager loading --}}
+                <td>{{ $customer->actions->sortByDesc('created_at')->first()->created_at->diffForHumans() }}</td>
             </tr>
         @endforeach
     </table>
