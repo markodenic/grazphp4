@@ -17,7 +17,10 @@
                 <td>{{ $customer->last_name }}, {{ $customer->first_name }}</td>
                 <td>{{ $customer->company->name }}</td>
                 <td>{{ $customer->birth_date->format('F j') }}</td>
-                <td>{{ $customer->last_action_date->diffForHumans() }}</td>
+                <td>
+                    {{ $customer->last_action_date->diffForHumans() }}
+                    <span class="text-secondary">({{ $customer->last_action_type }})</span>
+                </td>
             </tr>
         @endforeach
     </table>

@@ -56,4 +56,15 @@ class Customer extends Model
 
         return $query->select('customers.*')->selectSub($subQuery, 'last_action_date');
     }
+
+    /**
+     * @param $query
+     */
+    public function scopeWithLastActionType($query)
+    {
+        $query->addSubSelect('last_action_type', Action::select('type')
+            ->whereRaw('customer_id = customers.id')
+            ->latest()
+        );
+    }
 }
