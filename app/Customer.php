@@ -15,6 +15,7 @@ class Customer extends Model
      */
     protected $casts = [
         'birth_date' => 'date',
+        'last_action_date' => 'datetime',
     ];
 
     /**
@@ -39,5 +40,20 @@ class Customer extends Model
     public function scopeOrderByName($query)
     {
         $query->orderBy('last_name')->orderBy('first_name');
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeWithLastActionDate($query)
+    {
+        $subQuery = \DB::table('actions')
+            ->select('created_at')
+            ->whereRaw('customer_id = customers.id')
+            ->latest()
+            ->limit(1);
+
+        return $query->select('customers.*')->selectSub($subQuery, 'last_action_date');
     }
 }
