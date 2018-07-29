@@ -15,7 +15,6 @@ class Customer extends Model
      */
     protected $casts = [
         'birth_date' => 'date',
-        'last_action_date' => 'datetime',
     ];
 
     /**
@@ -32,6 +31,25 @@ class Customer extends Model
     public function actions()
     {
         return $this->hasMany(Action::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function lastAction()
+    {
+        return $this->hasOne(Action::class, 'id', 'last_interaction_id');
+    }
+
+    /**
+     * @param $query
+     */
+    public function scopeWithLastAction($query)
+    {
+        $query->addSubSelect('last_interaction_id', Action::select('id')
+            ->whereRaw('customer_id = customers.id')
+            ->latest()
+        )->with('lastAction');
     }
 
     /**
@@ -66,5 +84,46 @@ class Customer extends Model
             ->whereRaw('customer_id = customers.id')
             ->latest()
         );
+    }
+
+    /**
+     * @param $query
+     */
+    public function scopeOrderByCompany($query)
+    {
+        $query->orderBySub(Company::select('name')->whereRaw('customers.company_id = companies.id'));
+    }
+
+    /**
+     * @param $query
+     */
+    public function scopeOrderByBirthday($query)
+    {
+        $query->orderBy('birth_date');
+    }
+
+    /**
+     * @param $query
+     */
+    public function scopeOrderByLastActionDate($query)
+    {
+        $query->orderBySubDesc(Action::select('created_at')->whereRaw('customers.id = actions.customer_id')->latest());
+    }
+
+    /**
+     * @param $query
+     * @param $field
+     */
+    public function scopeOrderByField($query, $field)
+    {
+        if ($field === 'name') {
+            $query->orderByName();
+        } elseif ($field === 'company') {
+            $query->orderByCompany();
+        } elseif ($field === 'birthday') {
+            $query->orderByBirthday();
+        } elseif ($field === 'last_action') {
+            $query->orderByLastActionDate();
+        }
     }
 }

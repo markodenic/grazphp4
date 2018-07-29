@@ -6,20 +6,20 @@
 
     <table class="table my-4">
         <tr>
-            <th>Name</th>
-            <th>Company</th>
-            <th>Birthday</th>
-            <th>Last action</th>
+            <th><a class="{{ request('order', 'name') === 'name' ? 'text-dark' : '' }}" href="{{ route('customers', ['order' => 'name'] + request()->except('page')) }}">Name</a></th>
+            <th><a class="{{ request('order') === 'company' ? 'text-dark' : '' }}" href="{{ route('customers', ['order' => 'company'] + request()->except('page')) }}">Company</a></th>
+            <th><a class="{{ request('order') === 'birthday' ? 'text-dark' : '' }}" href="{{ route('customers', ['order' => 'birthday'] + request()->except('page')) }}">Birthday</a></th>
+            <th><a class="{{ request('order') === 'last_action' ? 'text-dark' : '' }}" href="{{ route('customers', ['order' => 'last_action'] + request()->except('page')) }}">Last Action</a></th>
         </tr>
 
         @foreach ($customers as $customer)
             <tr>
                 <td>{{ $customer->last_name }}, {{ $customer->first_name }}</td>
                 <td>{{ $customer->company->name }}</td>
-                <td>{{ $customer->birth_date->format('F j') }}</td>
+                <td>{{ $customer->birth_date->format('d M Y') }}</td>
                 <td>
-                    {{ $customer->last_action_date->diffForHumans() }}
-                    <span class="text-secondary">({{ $customer->last_action_type }})</span>
+                    {{ $customer->lastAction->created_at->diffForHumans() }}
+                    <span class="text-secondary">({{ $customer->lastAction->type }})</span>
                 </td>
             </tr>
         @endforeach
