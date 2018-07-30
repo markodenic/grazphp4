@@ -20,6 +20,7 @@ class CustomersController extends Controller
     {
         $customers = Customer::with('company')
             ->withLastAction()
+            ->whereSearch($request->get('search'))
             ->orderByField($request->get('order', 'name'))
             ->paginate();
         return view('customers', ['customers' => $customers]);
