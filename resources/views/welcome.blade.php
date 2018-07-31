@@ -49,6 +49,11 @@
                 font-size: 84px;
             }
 
+            .subtitle {
+                font-size: 21px;
+                color: #333;
+            }
+
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
@@ -59,35 +64,24 @@
                 text-transform: uppercase;
             }
 
-            .m-b-md {
+            .mb-30 {
                 margin-bottom: 30px;
             }
         </style>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
+            <div class="top-right links">
+                <a href="{{ url('/customers') }}">Customers</a>
+            </div>
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+                <div class="title mb-30">
+                    grazPHP #4
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="subtitle">
+                    Topic: "Advanced Querying with Laravel. The power of Eloquent."<br> - by Marko Denić
                 </div>
             </div>
         </div>
