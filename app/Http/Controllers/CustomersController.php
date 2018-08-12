@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use Illuminate\Http\Request;
 
 /**
  * Class CustomersController
@@ -11,11 +12,17 @@ use App\Customer;
 class CustomersController extends Controller
 {
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::paginate();
+        $customers = Customer::with('company')
+            ->withLastAction()
+            ->whereSearch($request->get('search'))
+            ->orderByField($request->get('order', 'name'))
+            ->paginate();
         return view('customers', ['customers' => $customers]);
     }
 }
